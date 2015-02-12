@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="url" value="jdbc:postgresql://localhost:5432/desafio" />
+        <property name="username" value="postgres" />
+        <property name="password" value="root" />
+        <property name="initialSize" value="1" />
+    </bean>
+    
+    	<!-- 
+		JAVA PERSISTENCE API 
+	-->
+	<!-- EntityManager Factory -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    	<property name="dataSource" ref="dataSource"/>
+    	<property name="persistenceUnitName" value="br.com.geocab"/>
+    	<property name="packagesToScan" value="br.com.geocab.domain.entity"/>
+    	<property name="persistenceProviderClass" value="org.hibernate.jpa.HibernatePersistenceProvider"/>
+    	<property name="jpaVendorAdapter">
+    		<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+    	</property>
+        <property name="jpaProperties">
+        	<util:map>
+		   		<!-- General -->
+		   		<entry key="hibernate.hbm2ddl.auto" value="update"/>
+		   		<entry key="hibernate.format_sql" value="false"/>
+		   		<entry key="hibernate.show_sql" value="true"/>
+		   		<!-- <entry key="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/> -->
+<!-- 		   		<entry key="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>  -->
+		   		<entry key="hibernate.default_schema" value="desafio"/> 
+<!-- 		   		<entry key="hibernate.ejb.naming_strategy" value="br.com.geocab.infrastructure.jpa2.hibernate.NamingStrategy"/> -->
+		   		 
+		   		<!-- Cache 
+		   		<entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
+		   		<entry key="hibernate.cache.use_second_level_cache" value="true"/>
+		   		<entry key="hibernate.cache.use_query_cache" value="true"/>
+		   		--> 
+		   		
+		   		<!-- Envers (Auditing) -->
+		   		<entry key="org.hibernate.envers.audit_table_suffix" value="_auditoria"/>
+		   		<entry key="org.hibernate.envers.revision_field_name" value="revision"/>
+		   		<entry key="org.hibernate.envers.revision_type_field_name" value="revision_type"/>
+		   		<entry key="org.hibernate.envers.default_schema" value="desafio_auditoria"/>
+			</util:map>
+        </property>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="desafio" />
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+    <context:annotation-config />
+
+    <tx:annotation-driven />
+
+    <context:component-scan base-package="desafio.application.model" />
+
+</beans>

@@ -14,6 +14,7 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 		<springsecurity.version>3.2.4.RELEASE</springsecurity.version>
 		<springdata.version>1.6.2.RELEASE</springdata.version>
+		<hibernate.version>4.3.5.Final</hibernate.version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -33,6 +34,44 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<!-- Spring ORM -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>4.1.1.RELEASE</version>
+		</dependency>
+
+		<!-- Tomcat JDBC -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>8.0.18</version>
+		</dependency>
+
+		<!-- PostGreSQL JDBC -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4-1200-jdbc41</version>
 		</dependency>
 
 		<!-- AspectJ -->
